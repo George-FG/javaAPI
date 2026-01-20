@@ -8,6 +8,7 @@ services:
       MYSQL_PASSWORD: reallysecurepasswordwhichnobodywillbeabletofindfromlookingatthegitcommits
     volumes:
       - mysql_data:/var/lib/mysql
+    restart: always
 
   app:
     build: .
@@ -20,6 +21,8 @@ services:
       SPRING_DATASOURCE_USERNAME: myuser
       SPRING_DATASOURCE_PASSWORD: reallysecurepasswordwhichnobodywillbeabletofindfromlookingatthegitcommits
       SERVER_PORT: 1111
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    restart: always
 
 volumes:
   mysql_data:
