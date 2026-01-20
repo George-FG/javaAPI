@@ -2,11 +2,14 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import main.user.UserService;
-import main.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.mockito.Mockito;
+
 import main.user.User;
+import main.user.UserRepository;
+import main.user.UserService;
+
+import org.mockito.Mockito;
+
 import java.util.Optional;
 
 public class UserServiceTest {
@@ -20,7 +23,7 @@ public class UserServiceTest {
         mockEncoder = Mockito.mock(PasswordEncoder.class);
         userService = new UserService(mockRepo, mockEncoder);
     }
-    
+
     @Test
     void testRegisterUserSuccess() {
         Mockito.when(mockRepo.existsByUsername("alice")).thenReturn(false);
