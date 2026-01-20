@@ -2,11 +2,11 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import user.UserService;
-import user.UserRepository;
+import main.user.UserService;
+import main.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.mockito.Mockito;
-import user.User;
+import main.user.User;
 import java.util.Optional;
 
 public class UserServiceTest {
