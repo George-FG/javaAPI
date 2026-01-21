@@ -41,14 +41,14 @@ public class AuthController {
     sessionCookie.setSecure(true);
     sessionCookie.setPath("/");
     sessionCookie.setMaxAge(1 * 60); // 1 minutes
-    sessionCookie.setDomain(".george.richmond.gg");
+    sessionCookie.setDomain("george.richmond.gg");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setHttpOnly(true);
     refreshCookie.setSecure(true);
     refreshCookie.setPath("/auth/refresh"); // only sent to refresh endpoint
     refreshCookie.setMaxAge(2 * 60); // 2 minutes
-    refreshCookie.setDomain(".george.richmond.gg");
+    refreshCookie.setDomain("george.richmond.gg");
 
     response.addCookie(sessionCookie);
     response.addCookie(refreshCookie);
@@ -70,14 +70,14 @@ public class AuthController {
     sessionCookie.setSecure(true);
     sessionCookie.setPath("/");
     sessionCookie.setMaxAge(1 * 60); // 1 minutes
-    sessionCookie.setDomain(".george.richmond.gg");
+    sessionCookie.setDomain("george.richmond.gg");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setHttpOnly(true);
     refreshCookie.setSecure(true);
     refreshCookie.setPath("/auth/refresh"); // only sent to refresh endpoint
     refreshCookie.setMaxAge(2 * 60); // 2 minutes
-    refreshCookie.setDomain(".george.richmond.gg");
+    refreshCookie.setDomain("george.richmond.gg");
 
     response.addCookie(sessionCookie);
     response.addCookie(refreshCookie);
@@ -122,14 +122,14 @@ public class AuthController {
         sessionCookie.setSecure(true);
         sessionCookie.setPath("/");
         sessionCookie.setMaxAge(1 * 60); // 1 minutes
-        sessionCookie.setDomain(".george.richmond.gg");
+        sessionCookie.setDomain("george.richmond.gg");
       
         Cookie refreshCookie = new Cookie("REFRESH", newRefreshToken);
         refreshCookie.setHttpOnly(true);
         refreshCookie.setSecure(true);
         refreshCookie.setPath("/auth/refresh"); // only sent to refresh endpoint
         refreshCookie.setMaxAge(2 * 60); // 2 minutes
-        refreshCookie.setDomain(".george.richmond.gg");
+        refreshCookie.setDomain("george.richmond.gg");
 
         response.addCookie(sessionCookie);
         response.addCookie(refreshCookie);
