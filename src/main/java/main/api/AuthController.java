@@ -164,7 +164,8 @@ public class AuthController {
   @PostMapping("/submit-score")
   public ResponseEntity<?> submitScore(@CookieValue(value = "SESSION", required = false) String sessionToken,
                                      @RequestParam String game,
-                                     @RequestParam int score) {
+                                     @RequestParam int score,
+                                    HttpServletResponse response) {
 
       if (sessionToken == null) {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -176,7 +177,7 @@ public class AuthController {
       }
 
       scoreService.registerScore(username, game, score);
-
+      response.setHeader("Access-Control-Allow-Credentials", "true");
       return ResponseEntity.ok(Collections.singletonMap("message", "Score submitted successfully"));
   }
 
