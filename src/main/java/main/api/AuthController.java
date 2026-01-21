@@ -161,7 +161,7 @@ public class AuthController {
 
 
 
-  @GetMapping("/submit-score")
+  @PostMapping("/submit-score")
   public ResponseEntity<?> submitScore(@CookieValue(value = "SESSION", required = false) String sessionToken,
                                      @RequestParam String game,
                                      @RequestParam int score) {
