@@ -17,7 +17,7 @@ public class CorsConfig {
                         "http://localhost:5173",            
                         "http://localhost:5174",
                         "http://localhost:3000",
-                        "https://auth.george.richmnd.uk"
+                        "https://auth.george.richmond.gg"
                     )
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*");

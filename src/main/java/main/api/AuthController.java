@@ -36,14 +36,14 @@ public class AuthController {
     sessionCookie.setSecure(true);
     sessionCookie.setPath("/");
     sessionCookie.setMaxAge(30 * 60); // 30 minutes
-    sessionCookie.setDomain(".george.richmnd.uk");
+    sessionCookie.setDomain(".george.richmond.gg");
 
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setHttpOnly(true);
     refreshCookie.setSecure(true);
     refreshCookie.setPath("/auth/refresh"); // only sent to refresh endpoint
     refreshCookie.setMaxAge(14 * 24 * 60 * 60); // 14 days
-    refreshCookie.setDomain("auth.george.richmnd.uk");
+    refreshCookie.setDomain("auth.george.richmond.gg");
 
     response.addCookie(sessionCookie);
     response.addCookie(refreshCookie);
@@ -65,14 +65,14 @@ public class AuthController {
     sessionCookie.setSecure(true);
     sessionCookie.setPath("/");
     sessionCookie.setMaxAge(30 * 60); // 30 minutes
-    sessionCookie.setDomain(".george.richmnd.uk");
+    sessionCookie.setDomain(".george.richmond.gg");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setHttpOnly(true);
     refreshCookie.setSecure(true);
     refreshCookie.setPath("/auth/refresh"); // only sent to refresh endpoint
     refreshCookie.setMaxAge(14 * 24 * 60 * 60); // 14 days
-    refreshCookie.setDomain("auth.george.richmnd.uk");
+    refreshCookie.setDomain("auth.george.richmond.gg");
 
     response.addCookie(sessionCookie);
     response.addCookie(refreshCookie);
