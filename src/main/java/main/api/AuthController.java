@@ -176,7 +176,7 @@ public class AuthController {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
       }
 
-      scoreService.registerScore(username, req.getGame(), req.getScore());
+      //scoreService.registerScore(username, req.getGame(), req.getScore());
       response.setHeader("Access-Control-Allow-Credentials", "true");
       return ResponseEntity.ok(Collections.singletonMap("message", "Score submitted successfully"));
   }
