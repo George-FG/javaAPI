@@ -56,6 +56,12 @@ public class UserService {
         return true;
     }
 
+    public User getUserByUsername(String username) {
+        String normalizedUsername = username.trim();
+        return repo.findByUsername(normalizedUsername)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
     private boolean isValidPassword(String password) {
         if (password == null || password.length() < 8) return false;
 
