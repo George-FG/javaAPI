@@ -4,6 +4,7 @@ import main.api.dto.AuthResponse;
 import main.api.dto.LoginRequest;
 import main.api.dto.MeResponse;
 import main.api.dto.SignupRequest;
+import main.leaderboard.ScoreService;
 import main.user.AuthService;
 import main.user.User;
 import main.user.UserService;
@@ -23,10 +24,12 @@ public class AuthController {
 
   private final UserService userService;
   private final AuthService authService;
+  private final ScoreService scoreService;
 
-  public AuthController(UserService userService, AuthService authService) {
+  public AuthController(UserService userService, AuthService authService, ScoreService scoreService) {
     this.userService = userService;
     this.authService = authService;
+    this.scoreService = scoreService;
   }
 
   private Cookie[] createAuthCookies(String sessionToken, String refreshToken) {
@@ -157,6 +160,32 @@ public class AuthController {
   }
 
 
+
+  @GetMapping("/submit-score")
+  public ResponseEntity<?> submitScore(@CookieValue(value = "SESSION", required = false) String sessionToken,
+                                     @RequestParam String game,
+                                     @RequestParam int score) {
+
+      if (sessionToken == null) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+
+      String username = authService.findUserBySession(sessionToken);
+      if (username == null) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+
+      scoreService.registerScore(username, game, score);
+
+      return ResponseEntity.ok(Collections.singletonMap("message", "Score submitted successfully"));
+  }
+
+  @GetMapping("/scores-by-game")
+  public ResponseEntity<?> getScores(@RequestParam String game,
+                                     @RequestParam int page,
+                                     @RequestParam int size) {
+      return ResponseEntity.ok(scoreService.getScoresByGame(game, page, size));
+  }
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<String> badRequest(IllegalArgumentException e) {
