@@ -3,6 +3,7 @@ package main.api;
 import main.api.dto.AuthResponse;
 import main.api.dto.LoginRequest;
 import main.api.dto.MeResponse;
+import main.api.dto.ScoreRequest;
 import main.api.dto.SignupRequest;
 import main.leaderboard.ScoreService;
 import main.user.AuthService;
@@ -163,8 +164,7 @@ public class AuthController {
 
   @PostMapping("/submit-score")
   public ResponseEntity<?> submitScore(@CookieValue(value = "SESSION", required = false) String sessionToken,
-                                     @RequestParam String game,
-                                     @RequestParam int score,
+                                     @RequestBody ScoreRequest req,
                                     HttpServletResponse response) {
 
       if (sessionToken == null) {
@@ -176,7 +176,7 @@ public class AuthController {
           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
       }
 
-      scoreService.registerScore(username, game, score);
+      scoreService.registerScore(username, req.getGame(), req.getScore());
       response.setHeader("Access-Control-Allow-Credentials", "true");
       return ResponseEntity.ok(Collections.singletonMap("message", "Score submitted successfully"));
   }
