@@ -4,6 +4,8 @@ public class ScoreRequest {
     private String game;
     private int score;
 
+    public ScoreRequest() {}
+
     public String getGame() {
         return game;
     }
