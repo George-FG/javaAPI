@@ -33,13 +33,13 @@ public class AuthController {
     Cookie sessionCookie = new Cookie("SESSION", sessionToken);
     sessionCookie.setMaxAge(10 * 60); // 10 minutes
     sessionCookie.setSecure(true);
-    sessionCookie.setDomain("richmond.gg");
+    sessionCookie.setDomain("george.richmond.gg");
     sessionCookie.setAttribute("SameSite", "None");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setMaxAge(20 * 60); // 20 minutes
     refreshCookie.setSecure(true);
-    refreshCookie.setDomain("richmond.gg");
+    refreshCookie.setDomain("george.richmond.gg");
     refreshCookie.setAttribute("SameSite", "None");
 
 
