@@ -14,10 +14,8 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                     .allowedOrigins(
-                        "http://localhost:5173",            
-                        "http://localhost:5174",
-                        "http://localhost:3000",
-                        "https://auth.george.richmond.gg"
+                        "https://auth.george.richmond.gg",
+                        "https://minigames.george.richmond.gg"
                     )
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*");

@@ -27,6 +27,22 @@ public class AuthService {
         return token;
     }
 
+    public String findUserBySession(String token) {
+        TokenData data = sessionTokens.get(token);
+        if (data == null || data.getExpiryTime() < System.currentTimeMillis()) {
+            return null;
+        }
+        return data.getUsername();
+    }
+
+    public String findUserByRefreshToken(String token) {
+        TokenData data = refreshTokens.get(token);
+        if (data == null || data.getExpiryTime() < System.currentTimeMillis()) {
+            return null;
+        }
+        return data.getUsername();
+    }
+
     private String generateToken() {
         byte[] randomBytes = new byte[32];
         secureRandom.nextBytes(randomBytes);
