@@ -6,6 +6,11 @@ public class ScoreRequest {
 
     public ScoreRequest() {}
 
+    public ScoreRequest(String game, int score) {
+        this.game = game;
+        this.score = score;
+    }
+
     public String getGame() {
         return game;
     }
