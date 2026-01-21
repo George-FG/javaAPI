@@ -18,6 +18,7 @@ public class CorsConfig {
                         "https://minigames.george.richmond.gg"
                     )
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowCredentials(true)
                     .allowedHeaders("*");
             }
         };

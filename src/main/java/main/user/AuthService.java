@@ -43,6 +43,14 @@ public class AuthService {
         return data.getUsername();
     }
 
+    public void invalidateSession(String token) {
+        sessionTokens.remove(token);
+    }
+
+    public void invalidateRefreshToken(String token) {
+        refreshTokens.remove(token);
+    }
+
     private String generateToken() {
         byte[] randomBytes = new byte[32];
         secureRandom.nextBytes(randomBytes);
