@@ -32,14 +32,12 @@ public class AuthController {
   private Cookie[] createAuthCookies(String sessionToken, String refreshToken) {
     Cookie sessionCookie = new Cookie("SESSION", sessionToken);
     sessionCookie.setHttpOnly(true);
-    sessionCookie.setSecure(true);
     sessionCookie.setPath("/");
     sessionCookie.setMaxAge(1 * 60); // 1 minutes
     sessionCookie.setDomain("richmond.gg");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setHttpOnly(true);
-    refreshCookie.setSecure(true);
     refreshCookie.setPath("/"); 
     refreshCookie.setMaxAge(2 * 60); // 2 minutes
     refreshCookie.setDomain("richmond.gg");
