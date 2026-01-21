@@ -123,6 +123,39 @@ public class AuthController {
         return ResponseEntity.ok(Collections.singletonMap("message", "Tokens refreshed successfully"));
     }
 
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout(
+      @CookieValue(value = "SESSION", required = false) String sessionToken,
+      @CookieValue(value = "REFRESH", required = false) String refreshToken,
+      HttpServletResponse response) {
+
+      if (sessionToken != null) {
+          authService.invalidateSession(sessionToken);
+      }
+      if (refreshToken != null) {
+          authService.invalidateRefreshToken(refreshToken);
+      }
+
+      Cookie sessionCookie = new Cookie("SESSION", null);
+      sessionCookie.setMaxAge(0);
+      sessionCookie.setSecure(true);
+      sessionCookie.setPath("/");
+      sessionCookie.setDomain("george.richmond.gg");
+      sessionCookie.setAttribute("SameSite", "None");
+
+      Cookie refreshCookie = new Cookie("REFRESH", null);
+      refreshCookie.setMaxAge(0);
+      refreshCookie.setSecure(true);
+      refreshCookie.setPath("/");
+      refreshCookie.setDomain("george.richmond.gg");
+      refreshCookie.setAttribute("SameSite", "None");
+
+      response.addCookie(sessionCookie);
+      response.addCookie(refreshCookie);
+      response.setHeader("Access-Control-Allow-Credentials", "true");
+      return ResponseEntity.ok(Collections.singletonMap("message", "Logged out successfully"));
+  }
+
 
 
   @ExceptionHandler(IllegalArgumentException.class)
