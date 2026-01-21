@@ -34,13 +34,11 @@ public class AuthController {
     sessionCookie.setHttpOnly(true);
     sessionCookie.setPath("/");
     sessionCookie.setMaxAge(1 * 60); // 1 minutes
-    sessionCookie.setDomain("auth.george.richmond.gg");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
     refreshCookie.setHttpOnly(true);
     refreshCookie.setPath("/"); 
     refreshCookie.setMaxAge(2 * 60); // 2 minutes
-    refreshCookie.setDomain("auth.george.richmond.gg");
 
     return new Cookie[] { sessionCookie, refreshCookie };
   }
