@@ -29,6 +29,24 @@ public class AuthController {
     this.authService = authService;
   }
 
+  private Cookie[] createAuthCookies(String sessionToken, String refreshToken) {
+    Cookie sessionCookie = new Cookie("SESSION", sessionToken);
+    sessionCookie.setHttpOnly(true);
+    sessionCookie.setSecure(true);
+    sessionCookie.setPath("/");
+    sessionCookie.setMaxAge(1 * 60); // 1 minutes
+    sessionCookie.setDomain("richmond.gg");
+   
+    Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
+    refreshCookie.setHttpOnly(true);
+    refreshCookie.setSecure(true);
+    refreshCookie.setPath("/"); 
+    refreshCookie.setMaxAge(2 * 60); // 2 minutes
+    refreshCookie.setDomain("richmond.gg");
+
+    return new Cookie[] { sessionCookie, refreshCookie };
+  }
+
   @PostMapping("/signup")
   public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest req, HttpServletResponse response) {
     User user = userService.registerUser(req.getUsername(), req.getPassword());
@@ -36,22 +54,10 @@ public class AuthController {
     String sessionToken = authService.createSession(user, 1 * 60);
     String refreshToken = authService.createRefreshToken(user, 2 * 60);
 
-    Cookie sessionCookie = new Cookie("SESSION", sessionToken);
-    sessionCookie.setHttpOnly(true);
-    sessionCookie.setSecure(true);
-    sessionCookie.setPath("/");
-    sessionCookie.setMaxAge(1 * 60); // 1 minutes
-    sessionCookie.setDomain(".richmond.gg");
-   
-    Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
-    refreshCookie.setHttpOnly(true);
-    refreshCookie.setSecure(true);
-    refreshCookie.setPath("/"); 
-    refreshCookie.setMaxAge(2 * 60); // 2 minutes
-    refreshCookie.setDomain(".richmond.gg");
-
-    response.addCookie(sessionCookie);
-    response.addCookie(refreshCookie);
+    Cookie[] cookies = createAuthCookies(sessionToken, refreshToken);
+    for (Cookie cookie : cookies) {
+      response.addCookie(cookie);
+    }
     
     return ResponseEntity.ok(new AuthResponse(user.getUsername(), null));
   }
@@ -65,22 +71,10 @@ public class AuthController {
     String sessionToken = authService.createSession(user, 1 * 60);
     String refreshToken = authService.createRefreshToken(user, 2 * 60);
 
-    Cookie sessionCookie = new Cookie("SESSION", sessionToken);
-    sessionCookie.setHttpOnly(true);
-    sessionCookie.setSecure(true);
-    sessionCookie.setPath("/");
-    sessionCookie.setMaxAge(1 * 60); // 1 minutes
-    sessionCookie.setDomain(".richmond.gg");
-   
-    Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
-    refreshCookie.setHttpOnly(true);
-    refreshCookie.setSecure(true);
-    refreshCookie.setPath("/"); 
-    refreshCookie.setMaxAge(2 * 60); // 2 minutes
-    refreshCookie.setDomain(".richmond.gg");
-
-    response.addCookie(sessionCookie);
-    response.addCookie(refreshCookie);
+    Cookie[] cookies = createAuthCookies(sessionToken, refreshToken);
+    for (Cookie cookie : cookies) {
+      response.addCookie(cookie);
+    }
     
     return ResponseEntity.ok(new AuthResponse(req.getUsername(), null));
   }
@@ -117,22 +111,10 @@ public class AuthController {
         String sessionToken = authService.createSession(userService.getUserByUsername(username), 1 * 60);
         String newRefreshToken = authService.createRefreshToken(userService.getUserByUsername(username), 2 * 60);
 
-        Cookie sessionCookie = new Cookie("SESSION", sessionToken);
-        sessionCookie.setHttpOnly(true);
-        sessionCookie.setSecure(true);
-        sessionCookie.setPath("/");
-        sessionCookie.setMaxAge(1 * 60); // 1 minutes
-        sessionCookie.setDomain(".richmond.gg");
-      
-        Cookie refreshCookie = new Cookie("REFRESH", newRefreshToken);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
-        refreshCookie.setPath("/"); 
-        refreshCookie.setMaxAge(2 * 60); // 2 minutes
-        refreshCookie.setDomain(".richmond.gg");
-
-        response.addCookie(sessionCookie);
-        response.addCookie(refreshCookie);
+        Cookie[] cookies = createAuthCookies(sessionToken, newRefreshToken);
+        for (Cookie cookie : cookies) {
+            response.addCookie(cookie);
+        }
 
         return ResponseEntity.ok(Collections.singletonMap("message", "Tokens refreshed successfully"));
     }
