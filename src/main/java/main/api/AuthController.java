@@ -58,6 +58,7 @@ public class AuthController {
       response.addCookie(cookie);
     }
     
+    response.setHeader("Access-Control-Allow-Credentials", "true");
     return ResponseEntity.ok(new AuthResponse(user.getUsername(), null));
   }
 
@@ -75,6 +76,7 @@ public class AuthController {
       response.addCookie(cookie);
     }
     
+    response.setHeader("Access-Control-Allow-Credentials", "true");
     return ResponseEntity.ok(new AuthResponse(req.getUsername(), null));
   }
 
@@ -115,6 +117,7 @@ public class AuthController {
             response.addCookie(cookie);
         }
 
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         return ResponseEntity.ok(Collections.singletonMap("message", "Tokens refreshed successfully"));
     }
 
