@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface ScoresRepository extends JpaRepository<Score, Long> {
     Optional<Score> findByUsername(String username);
+    Optional<Score> findByUsernameAndGame(String username, String game);
     boolean findByScore(int score);
     
     Page<Score> findByGameOrderByScoreDesc(String game, Pageable pageable);

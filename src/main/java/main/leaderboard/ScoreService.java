@@ -1,6 +1,8 @@
 package main.leaderboard;
 
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,6 @@ public class ScoreService {
 
     public ScoreService(ScoresRepository repo) {
         this.repo = repo;
-        repo.deleteAll();
-
     }
 
     public Score registerScore(String username, String game, int score) {
@@ -27,9 +27,20 @@ public class ScoreService {
             throw new IllegalArgumentException("Score cannot be negative");
         }
 
-        Score scoreObj = new Score(username.trim(), game.trim(), score);
+        Optional<Score> existing = repo.findByUsernameAndGame(username, game);
 
-        return repo.save(scoreObj);
+        if (existing.isEmpty()) {
+            return repo.save(new Score(username, game, score));
+        }
+
+        Score current = existing.get();
+
+        if (score > current.getScore()) {
+            current.updateScore(score);
+            current.updateTimestamp();
+        }
+
+        return null;
     }
 
     public Page<Score> getScoresByGame(String game, int page, int size) {
