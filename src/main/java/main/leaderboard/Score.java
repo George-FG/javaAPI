@@ -3,7 +3,11 @@ package main.leaderboard;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "scores")
+@Table(name = "scores",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username", "game"})
+    }
+)
 public class Score {
 
     @Id
@@ -51,4 +55,13 @@ public class Score {
     public Long getTimestamp() {
         return timestamp;
     }
+
+    public void updateScore(int score) {
+        this.score = score;
+    }
+
+    public void updateTimestamp() {
+        this.timestamp = System.currentTimeMillis();
+    }
+
 }
