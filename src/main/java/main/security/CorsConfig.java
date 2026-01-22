@@ -15,7 +15,8 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                     .allowedOrigins(
                         "https://auth.george.richmond.gg",
-                        "https://minigames.george.richmond.gg"
+                        "https://minigames.george.richmond.gg",
+                        "http://localhost:5173"
                     )
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowCredentials(true)
