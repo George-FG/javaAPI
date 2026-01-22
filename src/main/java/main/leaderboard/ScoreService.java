@@ -37,7 +37,11 @@ public class ScoreService {
 
         Score current = existing.get();
 
-        if (score > current.getScore()) {
+        if (game.equals("pathfinding") || game.equals("sorting")) {
+                current.updateScore(score + current.getScore());
+                current.updateTimestamp();
+        }
+        else if (score > current.getScore()) {
             current.updateScore(score);
             current.updateTimestamp();
         }
