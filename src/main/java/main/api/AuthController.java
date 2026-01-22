@@ -27,6 +27,10 @@ public class AuthController {
   private final AuthService authService;
   private final ScoreService scoreService;
 
+  private final int SESSION_DURATION_SECONDS = 30 * 60; // 30 minutes
+  private final int REFRESH_DURATION_SECONDS = 60 * 60 * 24; // 24 hours
+  private final int GAME_DURATION_SECONDS = 2 * 60; // 2 minutes
+
   public AuthController(UserService userService, AuthService authService, ScoreService scoreService) {
     this.userService = userService;
     this.authService = authService;
@@ -35,14 +39,14 @@ public class AuthController {
 
   private Cookie[] createAuthCookies(String sessionToken, String refreshToken) {
     Cookie sessionCookie = new Cookie("SESSION", sessionToken);
-    sessionCookie.setMaxAge(10 * 60); // 10 minutes
+    sessionCookie.setMaxAge(SESSION_DURATION_SECONDS); // 30 minutes
     sessionCookie.setSecure(true);
     sessionCookie.setPath("/");
     sessionCookie.setDomain("george.richmond.gg");
     sessionCookie.setAttribute("SameSite", "None");
    
     Cookie refreshCookie = new Cookie("REFRESH", refreshToken);
-    refreshCookie.setMaxAge(20 * 60); // 20 minutes
+    refreshCookie.setMaxAge(REFRESH_DURATION_SECONDS); // 24 hours
     refreshCookie.setSecure(true);
     refreshCookie.setPath("/");
     refreshCookie.setDomain("george.richmond.gg");
@@ -56,8 +60,8 @@ public class AuthController {
   public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest req, HttpServletResponse response) {
     User user = userService.registerUser(req.getUsername(), req.getPassword());
     
-    String sessionToken = authService.createSession(user, 1 * 60);
-    String refreshToken = authService.createRefreshToken(user, 2 * 60);
+    String sessionToken = authService.createSession(user, SESSION_DURATION_SECONDS);
+    String refreshToken = authService.createRefreshToken(user, REFRESH_DURATION_SECONDS);
 
     Cookie[] cookies = createAuthCookies(sessionToken, refreshToken);
     for (Cookie cookie : cookies) {
@@ -74,8 +78,8 @@ public class AuthController {
     
     User user = userService.getUserByUsername(req.getUsername());
     
-    String sessionToken = authService.createSession(user, 1 * 60);
-    String refreshToken = authService.createRefreshToken(user, 2 * 60);
+    String sessionToken = authService.createSession(user, SESSION_DURATION_SECONDS);
+    String refreshToken = authService.createRefreshToken(user, REFRESH_DURATION_SECONDS);
 
     Cookie[] cookies = createAuthCookies(sessionToken, refreshToken);
     for (Cookie cookie : cookies) {
@@ -115,8 +119,8 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String sessionToken = authService.createSession(userService.getUserByUsername(username), 1 * 60);
-        String newRefreshToken = authService.createRefreshToken(userService.getUserByUsername(username), 2 * 60);
+        String sessionToken = authService.createSession(userService.getUserByUsername(username), SESSION_DURATION_SECONDS);
+        String newRefreshToken = authService.createRefreshToken(userService.getUserByUsername(username), REFRESH_DURATION_SECONDS);
 
         Cookie[] cookies = createAuthCookies(sessionToken, newRefreshToken);
         for (Cookie cookie : cookies) {
@@ -184,6 +188,31 @@ public class AuthController {
       }
       response.setHeader("Access-Control-Allow-Credentials", "true");
       return ResponseEntity.ok(Collections.singletonMap("message", "Score submitted successfully"));
+  }
+
+  @PostMapping("/start")
+  public ResponseEntity<?> start(@CookieValue(value = "SESSION", required = false) String sessionToken,
+                                    HttpServletResponse response) {
+
+      if (sessionToken == null) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+
+      String username = authService.findUserBySession(sessionToken);
+      if (username == null) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      }
+
+      Cookie gameCookie = new Cookie("GAME", authService.createGameToken(userService.getUserByUsername(username), GAME_DURATION_SECONDS)); 
+      gameCookie.setMaxAge(GAME_DURATION_SECONDS); 
+      gameCookie.setSecure(true);
+      gameCookie.setPath("/");
+      gameCookie.setDomain("george.richmond.gg");
+      gameCookie.setAttribute("SameSite", "None");
+      
+      response.addCookie(gameCookie);
+      response.setHeader("Access-Control-Allow-Credentials", "true");
+      return ResponseEntity.ok(Collections.singletonMap("duration", GAME_DURATION_SECONDS));
   }
 
   @GetMapping("/scores-by-game")

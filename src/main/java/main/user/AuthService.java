@@ -11,6 +11,7 @@ public class AuthService {
 
     private final Map<String, TokenData> sessionTokens = new ConcurrentHashMap<>();
     private final Map<String, TokenData> refreshTokens = new ConcurrentHashMap<>();
+    private final Map<String, TokenData> gameTokens = new ConcurrentHashMap<>();
     private final SecureRandom secureRandom = new SecureRandom();
 
     public String createSession(User user, int durationSeconds) {
@@ -24,6 +25,13 @@ public class AuthService {
         String token = generateToken();
         long expiryTime = System.currentTimeMillis() + (durationSeconds * 1000L);
         refreshTokens.put(token, new TokenData(user.getUsername(), expiryTime));
+        return token;
+    }
+
+    public String createGameToken(User user, int durationSeconds) {
+        String token = generateToken();
+        long expiryTime = System.currentTimeMillis() + (durationSeconds * 1000L);
+        gameTokens.put(token, new TokenData(user.getUsername(), expiryTime));
         return token;
     }
 
@@ -41,6 +49,18 @@ public class AuthService {
             return null;
         }
         return data.getUsername();
+    }
+
+    public String findUserByGameToken(String token) {
+        TokenData data = gameTokens.get(token);
+        if (data == null || data.getExpiryTime() < System.currentTimeMillis()) {
+            return null;
+        }
+        return data.getUsername();
+    }
+
+    public void invalidateGameToken(String token) {
+        gameTokens.remove(token);
     }
 
     public void invalidateSession(String token) {
