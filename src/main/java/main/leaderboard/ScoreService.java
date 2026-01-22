@@ -12,6 +12,8 @@ public class ScoreService {
 
     public ScoreService(ScoresRepository repo) {
         this.repo = repo;
+        repo.deleteAll();
+
     }
 
     public Score registerScore(String username, String game, int score) {
